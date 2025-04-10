@@ -23,7 +23,7 @@ namespace ProceduralRoad
 
             public readonly float CurrentT(float time, float duration) => executionCurve.Evaluate(time / duration);
             public readonly float NextDuration() => executionDurationCurve.Evaluate(UnityEngine.Random.value);
-            public readonly float NextValue(float currentValue) => currentValue + Mathf.Lerp(minChange, maxChange, changeCurve.Evaluate(UnityEngine.Random.value));
+            public readonly float NextValue() => Mathf.Lerp(minChange, maxChange, changeCurve.Evaluate(UnityEngine.Random.value));
         }
 
         [Header("Path")]
@@ -32,8 +32,10 @@ namespace ProceduralRoad
         [SerializeField] private float stepTiling = 10;
 
         [Header("Generation")]
+        [SerializeField] private bool useSeed = false;
+        [SerializeField] private int seed;
         [SerializeField] private float stepSize = 3;
-        [SerializeField] private float maxPoints = 16;
+        [SerializeField] private int maxPoints = 16;
         [SerializeField] private float attributeTimeStep = 0.1f;
 
         [Header("Attributes")]
@@ -79,6 +81,11 @@ namespace ProceduralRoad
 
         private void Awake()
         {
+            if (useSeed)
+            {
+                UnityEngine.Random.InitState(seed);
+            }
+
             if (pathCreator == null)
             {
                 Debug.LogError($"{nameof(pathCreator)} is null");
@@ -127,7 +134,8 @@ namespace ProceduralRoad
         private Vector3 NextDirection()
         {
             float angle = Vector3.Angle(direction, Vector3.forward);
-            float newAngle = directionAnimation.NextValue(angle);
+            float newAngle = angle + directionAnimation.NextValue();
+            Debug.Log($"{angle} -> {newAngle}");
 
             float newAngleRad = newAngle * Mathf.Deg2Rad;
             return new(Mathf.Cos(newAngleRad), 0, Mathf.Sin(newAngleRad));
@@ -135,7 +143,7 @@ namespace ProceduralRoad
 
         private float NextHeight()
         {
-            return heightAnimation.NextValue(height);
+            return height + heightAnimation.NextValue();
         }
 
         private Vector3 GenerateNextPoint()
