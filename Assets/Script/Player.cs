@@ -10,10 +10,13 @@ namespace ProceduralDriving
         [Header("Path")]
         [SerializeField] private PathCreator pathCreator;
         [SerializeField] private RoadGenerator roadGenerator;
-        [SerializeField] private Rigidbody rb;
 
-        [Header("Respawn")]
+        private Rigidbody rb;
         private float checkpointDistance;
+
+        private float distanceTraveled = 0;
+
+        public float DistanceTraveled => distanceTraveled;
 
         private void Awake()
         {
@@ -38,11 +41,13 @@ namespace ProceduralDriving
 
         private void Update()
         {
+            distanceTraveled += new Vector2(rb.velocity.x, rb.velocity.z).magnitude * Time.deltaTime;
+
             float distance = pathCreator.path.GetClosestDistanceAlongPath(transform.position);
             float targetDistance = pathCreator.path.length / 2;
             if (distance - targetDistance > roadGenerator.StepSize)
             {
-                roadGenerator.GenerateSegment();
+                roadGenerator.GeneratePoint();
                 checkpointDistance = distance;
             }
 

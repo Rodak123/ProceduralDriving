@@ -1,0 +1,45 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d22a28c714dcfc49976c90c21f27bd1, type: 3}
+  m_Name: Base Road
+  m_EditorClassIdentifier: 
+  roadSegmentsChances:
+  - roadSegment: {fileID: 11400000, guid: 43e031f692fbbe84f946f05a183a3d55, type: 2}
+    chance: 8
+  - roadSegment: {fileID: 11400000, guid: d8685df48376502419db55e337eaed6a, type: 2}
+    chance: 8
+  - roadSegment: {fileID: 11400000, guid: 838dc87df06f8ab4d8afff3f43eb43fc, type: 2}
+    chance: 10
+  heightChangeCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
