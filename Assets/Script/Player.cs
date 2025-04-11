@@ -1,6 +1,7 @@
 using PathCreation;
 using ProceduralRoad;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace ProceduralDriving
 {
@@ -52,6 +53,8 @@ namespace ProceduralDriving
             }
 
             if (Input.GetKeyDown(KeyCode.R)) Respawn();
+            if (Input.GetKeyDown(KeyCode.N)) Reload();
+            if (Input.GetKeyDown(KeyCode.Escape)) Exit();
         }
 
         public void Respawn()
@@ -62,6 +65,18 @@ namespace ProceduralDriving
 
             rb.velocity = Vector3.zero;
             rb.angularVelocity = Vector3.zero;
+        }
+
+        public void Reload()
+        {
+            SceneManager.LoadScene(0);
+        }
+
+        public void Exit()
+        {
+#if !UNITY_WEBGL && !UNITY_EDITOR
+            Application.Quit();
+#endif
         }
     }
 }
