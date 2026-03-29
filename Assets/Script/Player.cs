@@ -42,7 +42,7 @@ namespace ProceduralDriving
 
         private void Update()
         {
-            distanceTraveled += new Vector2(rb.velocity.x, rb.velocity.z).magnitude * Time.deltaTime;
+            distanceTraveled += new Vector2(rb.linearVelocity.x, rb.linearVelocity.z).magnitude * Time.deltaTime;
 
             float distance = pathCreator.path.GetClosestDistanceAlongPath(transform.position);
             float targetDistance = pathCreator.path.length / 2;
@@ -63,7 +63,7 @@ namespace ProceduralDriving
             transform.position = pathCreator.path.GetPointAtTime(t) + new Vector3(0, 1, 0);
             transform.rotation = Quaternion.LookRotation(pathCreator.path.GetDirection(t));
 
-            rb.velocity = Vector3.zero;
+            rb.linearVelocity = Vector3.zero;
             rb.angularVelocity = Vector3.zero;
         }
 

@@ -78,7 +78,7 @@ public class CarController : MonoBehaviour
     public bool Skidding { get; private set; }
     public float BrakeInput { get; private set; }
     public float CurrentSteerAngle { get { return _steerAngle; } }
-    public float CurrentSpeed { get { return _speedType == SpeedType.MPH ? _rigidbody.velocity.magnitude * 2.23693629f : _rigidbody.velocity.magnitude * 3.6f; } }
+    public float CurrentSpeed { get { return _speedType == SpeedType.MPH ? _rigidbody.linearVelocity.magnitude * 2.23693629f : _rigidbody.linearVelocity.magnitude * 3.6f; } }
     public float MaxSpeed { get { return _topSpeed; } }
     public float Revs { get; private set; }
     public float AccelInput { get; private set; }
@@ -189,19 +189,19 @@ public class CarController : MonoBehaviour
 
     private void CapSpeed()
     {
-        float speed = _rigidbody.velocity.magnitude;
+        float speed = _rigidbody.linearVelocity.magnitude;
         switch (_speedType)
         {
             case SpeedType.MPH:
                 speed *= 2.23693629f;
                 if (speed > _topSpeed)
-                    _rigidbody.velocity = (_topSpeed / 2.23693629f) * _rigidbody.velocity.normalized;
+                    _rigidbody.linearVelocity = (_topSpeed / 2.23693629f) * _rigidbody.linearVelocity.normalized;
                 break;
 
             case SpeedType.KPH:
                 speed *= 3.6f;
                 if (speed > _topSpeed)
-                    _rigidbody.velocity = (_topSpeed / 3.6f) * _rigidbody.velocity.normalized;
+                    _rigidbody.linearVelocity = (_topSpeed / 3.6f) * _rigidbody.linearVelocity.normalized;
                 break;
         }
     }
@@ -230,7 +230,7 @@ public class CarController : MonoBehaviour
 
         for (int i = 0; i < 4; i++)
         {
-            if (CurrentSpeed > 5 && Vector3.Angle(transform.forward, _rigidbody.velocity) < 50f)
+            if (CurrentSpeed > 5 && Vector3.Angle(transform.forward, _rigidbody.linearVelocity) < 50f)
             {
                 wheelColliders[i].brakeTorque = _brakeTorque * footBrake;
             } 
@@ -243,7 +243,7 @@ public class CarController : MonoBehaviour
 
         if (footBrake > 0)
         {
-            if (CurrentSpeed > 5 && Vector3.Angle(transform.forward, _rigidbody.velocity) < 50f)
+            if (CurrentSpeed > 5 && Vector3.Angle(transform.forward, _rigidbody.linearVelocity) < 50f)
             {
                 TurnBrakeLightsOn();
             }
@@ -274,7 +274,7 @@ public class CarController : MonoBehaviour
         {
             float turnAdjust = (transform.eulerAngles.y - _oldRotation) * _steerHelper;
             Quaternion velRotation = Quaternion.AngleAxis(turnAdjust, Vector3.up);
-            _rigidbody.velocity = velRotation * _rigidbody.velocity;
+            _rigidbody.linearVelocity = velRotation * _rigidbody.linearVelocity;
         }
 
         _oldRotation = transform.eulerAngles.y;
@@ -324,7 +324,7 @@ public class CarController : MonoBehaviour
     private void AddDownForce()
     {
         if (_downForce > 0)
-            _rigidbody.AddForce(_downForce * _rigidbody.velocity.magnitude * -transform.up);
+            _rigidbody.AddForce(_downForce * _rigidbody.linearVelocity.magnitude * -transform.up);
     }
 
     private void CheckForWheelSpin()

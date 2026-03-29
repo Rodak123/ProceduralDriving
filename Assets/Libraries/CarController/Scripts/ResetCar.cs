@@ -17,7 +17,7 @@ public class ResetCar : MonoBehaviour
 
     public void Respawn()
     {
-        _rigidbody.velocity = Vector3.zero;
+        _rigidbody.linearVelocity = Vector3.zero;
         _rigidbody.angularVelocity = Vector3.zero;
         _rigidbody.MovePosition(_startPosition);
         _rigidbody.MoveRotation(_startRotation);
